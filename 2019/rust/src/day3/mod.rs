@@ -2,9 +2,9 @@ use std::cmp;
 use std::collections::HashSet;
 use std::fs;
 
-fn get_input(filepath: &str) -> (i32, i32){
+fn get_input(filepath: &str) -> (Vec<(String, i32)>, Vec<(String, i32)>) {
     let content = fs::read_to_string(filepath).expect("Cannnot read input file");
-    let lines = content.split 
+    let lines: Vec<&str> = content.lines().collect();
     let first: Vec<(String, i32)> = lines[0]
         .split(",")
         .map(|c| {
