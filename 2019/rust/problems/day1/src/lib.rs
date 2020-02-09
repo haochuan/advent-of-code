@@ -46,7 +46,7 @@ fn get_fuel(fuel: i32) -> i32 {
 }
 
 pub fn run() {
-    let filepath = "input/day1.txt";
+    let filepath = "problems/day1/input.txt";
     let mut input = Input {
         filepath,
         data: vec![],

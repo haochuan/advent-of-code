@@ -32,7 +32,7 @@ fn compute(data: &mut Vec<i32>) {
 }
 
 pub fn part_1() {
-    let filepath = "input/day2.txt";
+    let filepath = "problems/day2/input.txt";
     let mut data = get_input(filepath);
     compute(&mut data);
 
@@ -44,7 +44,7 @@ pub fn part_1() {
 }
 
 pub fn part_2() {
-    let filepath = "input/day2.txt";
+    let filepath = "problems/day2/input.txt";
     let mut data = get_input(filepath);
     let length = data.len();
     // don't quite like the brute force

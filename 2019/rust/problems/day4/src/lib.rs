@@ -85,7 +85,7 @@ fn is_valid_part_2(number: i32) -> (bool, u8) {
 }
 
 pub fn part_1() {
-    let (mut start, end) = get_input("input/day4.txt");
+    let (mut start, end) = get_input("problems/day4/input.txt");
     let mut count = 0;
     while start <= end {
         let (result, index) = is_valid_part_1(start);
@@ -100,7 +100,7 @@ pub fn part_1() {
 }
 
 pub fn part_2() {
-    let (mut start, end) = get_input("input/day4.txt");
+    let (mut start, end) = get_input("problems/day4/input.txt");
     let mut count = 0;
     while start <= end {
         let (result, index) = is_valid_part_2(start);
