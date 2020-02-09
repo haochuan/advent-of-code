@@ -31,7 +31,7 @@ fn compute(data: &mut Vec<i32>) {
     }
 }
 
-pub fn part_1() {
+fn part_1() {
     let filepath = "problems/day2/input.txt";
     let mut data = get_input(filepath);
     compute(&mut data);
@@ -40,10 +40,10 @@ pub fn part_1() {
     data[2] = 2;
 
     compute(&mut data);
-    println!("{:?}", data)
+    println!("Part 1 is: {:?}", data)
 }
 
-pub fn part_2() {
+fn part_2() {
     let filepath = "problems/day2/input.txt";
     let mut data = get_input(filepath);
     let length = data.len();
@@ -56,9 +56,14 @@ pub fn part_2() {
             data[2] = y as i32;
             compute(&mut data);
             if data[0] == 19690720 {
-                println!("100 * noun + verb: {}", 100 * x + y);
+                println!("Part 2 is: {}", 100 * x + y);
                 ()
             }
         }
     }
+}
+
+pub fn run() {
+    part_1();
+    part_2();
 }

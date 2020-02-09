@@ -1,5 +1,5 @@
 [package]
-name = "advent-of-code-2019-rust"
+name = "aoc2019"
 version = "0.1.0"
 authors = ["Haochuan Liu <haochuan.liu@gmail.com>"]
 edition = "2018"
@@ -7,6 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = "~2.27.0"
+
 day1 = {path = "problems/day1", version = "0.1.0"}
 day2 = {path = "problems/day2", version = "0.1.0"}
 day3 = {path = "problems/day3", version = "0.1.0"}

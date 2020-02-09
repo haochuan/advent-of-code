@@ -68,7 +68,7 @@ fn min_distance(intersection: Vec<(i32, i32)>) -> i32 {
     min
 }
 
-pub fn part_1() {
+fn part_1() {
     let (first, second) = get_input("problems/day3/input.txt");
     let points_1 = get_point(first);
     let points_2 = get_point(second);
@@ -77,5 +77,9 @@ pub fn part_1() {
 
     let intersection = get_intersection(points_1, points_2);
     let min = min_distance(intersection);
-    println!("min distance is {}", min);
+    println!("Part 1 is {}", min);
+}
+
+pub fn run() {
+    part_1();
 }

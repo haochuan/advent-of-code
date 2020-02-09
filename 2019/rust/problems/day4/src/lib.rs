@@ -65,7 +65,7 @@ fn is_valid_part_2(number: i32) -> (bool, u8) {
                 *count += 1;
             }
             None => {
-                let count = map.entry(c).or_insert(1);
+                let _count = map.entry(c).or_insert(1);
             }
         }
         if c.to_digit(10).unwrap() >= min_number {
@@ -84,7 +84,7 @@ fn is_valid_part_2(number: i32) -> (bool, u8) {
     (false, 6)
 }
 
-pub fn part_1() {
+fn part_1() {
     let (mut start, end) = get_input("problems/day4/input.txt");
     let mut count = 0;
     while start <= end {
@@ -96,10 +96,10 @@ pub fn part_1() {
             start = modify_digit(start, index, 1);
         }
     }
-    println!("there are {} different password.", count);
+    println!("Part 1: there are {} different password.", count);
 }
 
-pub fn part_2() {
+fn part_2() {
     let (mut start, end) = get_input("problems/day4/input.txt");
     let mut count = 0;
     while start <= end {
@@ -111,7 +111,12 @@ pub fn part_2() {
             start = modify_digit(start, index, 1);
         }
     }
-    println!("there are {} different password.", count);
+    println!("Part 2: there are {} different password.", count);
+}
+
+pub fn run() {
+    part_1();
+    part_2();
 }
 
 #[cfg(test)]
