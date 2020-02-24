@@ -7,12 +7,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "23ac7c30002a5accbf7e8987d0632fa6de155b7c3d39d0067317a391e00a2ef6"
 
 [[package]]
-name = "anyhow"
-version = "1.0.26"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7825f6833612eb2414095684fcf6c635becf3ce97fe48cf6421321e93bfbd53c"
-
-[[package]]
 name = "aoc2015"
 version = "0.1.0"
 dependencies = [
@@ -57,23 +51,14 @@ dependencies = [
 [[package]]
 name = "day1"
 version = "0.1.0"
-dependencies = [
- "anyhow",
-]
 
 [[package]]
 name = "day2"
 version = "0.1.0"
-dependencies = [
- "anyhow",
-]
 
 [[package]]
 name = "day3"
 version = "0.1.0"
-dependencies = [
- "anyhow",
-]
 
 [[package]]
 name = "hermit-abi"
