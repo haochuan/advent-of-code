@@ -1,5 +1,6 @@
-// extern crate day1;
+extern crate day1;
 extern crate day2;
+extern crate day3;
 //
 extern crate clap;
 use clap::{crate_version, App, Arg};
@@ -23,8 +24,9 @@ fn main() {
     if let Some(d) = matches.value_of("day") {
         let day = d.parse::<u8>().unwrap();
         match day {
-            // 1 => day1::run(),
+            1 => day1::run(),
             2 => day2::run(),
+            3 => day3::run(),
             _ => println!("Day {} is not valid, or it has not been solved.", day),
         }
     }
