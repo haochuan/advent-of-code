@@ -12,4 +12,6 @@ clap = "~2.27.0"
 day1 = {path = "problems/day1", version = "0.1.0"}
 day2 = {path = "problems/day2", version = "0.1.0"}
 day3 = {path = "problems/day3", version = "0.1.0"}
+day4 = {path = "problems/day4", version = "0.1.0"}
+day5 = {path = "problems/day5", version = "0.1.0"}
 
