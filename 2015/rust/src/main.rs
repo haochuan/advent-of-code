@@ -3,6 +3,7 @@ extern crate day2;
 extern crate day3;
 extern crate day4;
 extern crate day5;
+extern crate day6;
 //
 extern crate clap;
 use clap::{crate_version, App, Arg};
@@ -31,6 +32,7 @@ fn main() {
             3 => day3::run(),
             4 => day4::run(),
             5 => day5::run(),
+            6 => day6::run(),
             _ => println!("Day {} is not valid, or it has not been solved.", day),
         }
     }
