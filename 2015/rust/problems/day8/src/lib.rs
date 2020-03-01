@@ -26,17 +26,16 @@ fn cal_memory(input: &str) -> u32 {
     count
 }
 
-fn cal_encoding(input: &str) -> u32 {
+fn cal_encoding_increase(input: &str) -> u32 {
     // adding "", +2
     // first and last are ", will become \", +2
     let mut count = 4;
-    let data = input.as_bytes();
+    let data: Vec<char> = input.chars().collect();
     for i in 0..data.len() {
         let curr = data[i];
-        if curr == b'"' || curr == b'\\' {
+        if curr == '"' || curr == '\\' {
             count += 1;
         }
-        count += 1;
     }
     count
 }
@@ -57,14 +56,11 @@ pub fn part_1(input: &str) -> u32 {
 }
 
 pub fn part_2(input: &str) -> u32 {
-    let mut char_count = 0;
     let mut encoding_count = 0;
     for l in input.trim().lines() {
-        char_count += cal_char(l);
-        encoding_count += cal_encoding(l);
+        encoding_count += cal_encoding_increase(l);
     }
-    println!("encoding: {}, char: {}", encoding_count, char_count);
-    encoding_count - char_count
+    encoding_count
 }
 
 pub fn run() {
@@ -99,19 +95,17 @@ mod tests {
     }
     #[test]
     fn part_2_works() {
-        let mut char_count = 0;
         let mut encoding_count = 0;
         let input = vec![r#""#, r#"abc"#, r#"aaa\"aaa"#, r#"\x27"#];
         for l in input {
-            char_count += cal_char(l);
-            encoding_count += cal_encoding(l);
+            encoding_count += cal_encoding_increase(l);
             println!(
                 "input: {}, char: {}, encoding: {}",
                 l,
                 cal_char(l),
-                cal_encoding(l)
+                cal_encoding_increase(l)
             );
         }
-        assert_eq!(encoding_count - char_count, 193);
+        assert_eq!(encoding_count, 19);
     }
 }

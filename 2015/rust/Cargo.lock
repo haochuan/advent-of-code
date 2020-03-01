@@ -26,6 +26,7 @@ dependencies = [
  "day4",
  "day5",
  "day6",
+ "day7",
  "day8",
 ]
 
@@ -104,6 +105,13 @@ dependencies = [
 
 [[package]]
 name = "day6"
+version = "0.1.0"
+dependencies = [
+ "regex",
+]
+
+[[package]]
+name = "day7"
 version = "0.1.0"
 dependencies = [
  "regex",

@@ -1,130 +1,154 @@
+use regex::Captures;
+use regex::Regex;
 use std::collections::HashMap;
 use std::fs;
 
-struct Circuit<'a> {
-    map: HashMap<String, u16>,
-    queue: Vec<&'a String>,
+enum Signal {
+    Other(String),
+    And(String, String),
+    Or(String, String),
+    LShift(String, usize),
+    RShift(String, usize),
+    Not(String),
 }
 
-impl<'a> Circuit<'a> {
-    fn new() -> Self {
-        Circuit {
-            map: HashMap::new(),
-            queue: Vec::new(),
+fn solve(input: &Vec<String>, signal: String, b: Option<u16>) -> u16 {
+    let mut signals = HashMap::new();
+    let re_other = Regex::new(r"^(\w+) -> (\D+)$").unwrap();
+    let re_and = Regex::new(r"^(\w+) AND (\w+) -> (\D+)$").unwrap();
+    let re_or = Regex::new(r"^(\w+) OR (\w+) -> (\D+)$").unwrap();
+    let re_lshift = Regex::new(r"^(\w+) LSHIFT (\d+) -> (\D+)$").unwrap();
+    let re_rshift = Regex::new(r"^(\w+) RSHIFT (\d+) -> (\D+)$").unwrap();
+    let re_not = Regex::new(r"^NOT (\w+) -> (\D+)$").unwrap();
+
+    // Process each line of input. It's a lot of code, but it's mostly stuff.
+    for line in input.iter() {
+        if try_parse(line, &re_other, &mut |cap| {
+            let name = cap.get(2).unwrap().as_str().to_string();
+            signals.insert(
+                name,
+                Signal::Other(cap.get(1).unwrap().as_str().to_string()),
+            );
+        }) {
+            continue;
         }
-    }
-    // how to parse either number or key of hashmap?
-    fn get_value(&mut self, input: String) -> u16 {
-        if input.parse::<u16>().is_ok() {
-            input.parse().unwrap()
-        } else {
-            if let Some(value) = self.map.get(&input) {
-                *value
-            } else {
-                self.queue.push(&input);
-                0
-            }
+        if try_parse(line, &re_and, &mut |cap| {
+            let name = cap.get(3).unwrap().as_str().to_string();
+            signals.insert(
+                name,
+                Signal::And(
+                    cap.get(1).unwrap().as_str().to_string(),
+                    cap.get(2).unwrap().as_str().to_string(),
+                ),
+            );
+        }) {
+            continue;
         }
-    }
-
-    fn flush(&mut self) {
-        if self.queue.len() != 0 {
-            for l in self.queue.clone() {
-                self.read(l.to_string());
-            }
+        if try_parse(line, &re_or, &mut |cap| {
+            let name = cap.get(3).unwrap().as_str().to_string();
+            signals.insert(
+                name,
+                Signal::Or(
+                    cap.get(1).unwrap().as_str().to_string(),
+                    cap.get(2).unwrap().as_str().to_string(),
+                ),
+            );
+        }) {
+            continue;
         }
-    }
-
-    fn connect(&mut self, target: String, value: u16) {
-        println!("connect {} to {}", value, target);
-        self.map.insert(target, value);
-    }
-
-    fn read(&mut self, instruction: String) {
-        let instruction: Vec<String> = instruction
-            .split("->")
-            .map(|s| s.trim().to_string())
-            .collect();
-
-        let target = instruction[1].clone();
-        let commands = instruction[0].clone();
-        let commands_arr: Vec<String> = commands.split(" ").map(|s| s.trim().to_string()).collect();
-
-        match commands_arr.len() {
-            1 => {
-                // 321 -> x
-                let c: &String = &commands_arr[0];
-                let value = self.get_value(c.to_string());
-                self.connect(target, value);
-            }
-            2 => {
-                // NOT x -> h
-                let c: &String = &commands_arr[0];
-                let mut value = self.get_value(c.to_string());
-                value = !value;
-                self.connect(target, value);
-            }
-            3 => {
-                // x AND y -> d
-                // x OR y -> e
-                // x LSHIFT 2 -> f
-                // y RSHIFT 2 -> g
-                let operator = &commands_arr[1];
-                if operator == "AND" {
-                    let c1: &String = &commands_arr[0];
-                    let c2: &String = &commands_arr[2];
-                    let a = self.get_value(c1.to_string());
-                    let b = self.get_value(c2.to_string());
-                    let value = a & b;
-                    self.connect(target, value);
-                } else if operator == "OR" {
-                    let c1: &String = &commands_arr[0];
-                    let c2: &String = &commands_arr[2];
-                    let a = self.get_value(c1.to_string());
-                    let b = self.get_value(c2.to_string());
-                    let value = a | b;
-                    self.connect(target, value);
-                } else if operator == "LSHIFT" {
-                    let c: &String = &commands_arr[0];
-                    let source_value = self.get_value(c.to_string());
-                    let steps: u16 = commands_arr[2].parse().unwrap();
-                    let value = source_value << steps;
-                    self.connect(target, value);
-                } else {
-                    let c: &String = &commands_arr[0];
-                    let source_value = self.get_value(c.to_string());
-                    let steps: u16 = commands_arr[2].parse().unwrap();
-                    let value = source_value >> steps;
-                    self.connect(target, value);
-                }
-            }
-            _ => (),
+        if try_parse(line, &re_lshift, &mut |cap| {
+            let name = cap.get(3).unwrap().as_str().to_string();
+            signals.insert(
+                name,
+                Signal::LShift(
+                    cap.get(1).unwrap().as_str().to_string(),
+                    cap.get(2).unwrap().as_str().parse().unwrap(),
+                ),
+            );
+        }) {
+            continue;
         }
+        if try_parse(line, &re_rshift, &mut |cap| {
+            let name = cap.get(3).unwrap().as_str().to_string();
+            signals.insert(
+                name,
+                Signal::RShift(
+                    cap.get(1).unwrap().as_str().to_string(),
+                    cap.get(2).unwrap().as_str().parse().unwrap(),
+                ),
+            );
+        }) {
+            continue;
+        }
+        if try_parse(line, &re_not, &mut |cap| {
+            let name = cap.get(2).unwrap().as_str().to_string();
+            signals.insert(name, Signal::Not(cap.get(1).unwrap().as_str().to_string()));
+        }) {
+            continue;
+        }
+        panic!("failed to parse: {}", line);
     }
+
+    // recursively find the value of the desired signal
+    let mut cache = HashMap::new();
+    if b.is_some() {
+        // override signal b by setting cache value
+        cache.insert("b".to_string(), b.unwrap());
+    }
+    return get_val(&signals, &mut cache, &signal);
 }
 
+fn get_val(signals: &HashMap<String, Signal>, cache: &mut HashMap<String, u16>, s: &String) -> u16 {
+    if cache.contains_key(s) {
+        return *cache.get(s).unwrap();
+    }
+    let v: Result<u16, _> = s.parse();
+    if v.is_ok() {
+        return v.unwrap();
+    }
+    let r = match signals.get(s) {
+        Some(&Signal::Other(ref s)) => get_val(signals, cache, s),
+        Some(&Signal::And(ref s1, ref s2)) => {
+            get_val(signals, cache, s1) & get_val(signals, cache, s2)
+        }
+        Some(&Signal::Or(ref s1, ref s2)) => {
+            get_val(signals, cache, s1) | get_val(signals, cache, s2)
+        }
+        Some(&Signal::LShift(ref s, n)) => get_val(signals, cache, s) << n,
+        Some(&Signal::RShift(ref s, n)) => get_val(signals, cache, s) >> n,
+        Some(&Signal::Not(ref s)) => !get_val(signals, cache, s),
+        None => panic!("unknown signal: {}", s),
+    };
+    cache.insert(s.clone(), r);
+    return r;
+}
+
+fn try_parse<'t, F>(line: &'t String, re: &Regex, f: &mut F) -> bool
+where
+    F: FnMut(Captures<'t>),
+{
+    match re.captures(line) {
+        Some(cap) => {
+            f(cap);
+            return true;
+        }
+        None => return false,
+    }
+}
 fn get_input(file_path: &str) -> String {
     let content = fs::read_to_string(file_path).expect("Failed to read input");
     content
 }
 
-pub fn part_1(input: &str) -> u16 {
-    let mut curcuit = Circuit::new();
-    for l in input.lines() {
-        curcuit.read(l.to_string());
-    }
-    *curcuit.map.get("a").unwrap()
-}
-
-pub fn part_2(input: &str) -> u16 {
-    1
-}
-
 pub fn run() {
-    let input = get_input("problems/day7/input.txt");
-    let part1 = part_1(&input);
+    let input: Vec<String> = get_input("problems/day7/input.txt")
+        .lines()
+        .map(|s| s.to_string())
+        .collect();
+    let part1 = solve(&input, "a".to_string(), None);
     println!("result for part 1: {}", part1);
-    let part2 = part_2(&input);
+
+    let part2 = solve(&input, "a".to_string(), Some(16076));
     println!("result for part 2: {}", part2);
 }
 #[cfg(test)]
