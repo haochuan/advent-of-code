@@ -19,4 +19,5 @@ day7 = {path = "problems/day7", version = "0.1.0"}
 day8 = {path = "problems/day8", version = "0.1.0"}
 day9 = {path = "problems/day9", version = "0.1.0"}
 day10 = {path = "problems/day10", version = "0.1.0"}
+day11 = {path = "problems/day11", version = "0.1.0"}
 
