@@ -1,6 +1,7 @@
 extern crate day1;
 extern crate day10;
 extern crate day11;
+extern crate day12;
 extern crate day2;
 extern crate day3;
 extern crate day4;
@@ -43,6 +44,7 @@ fn main() {
             9 => day9::run(),
             10 => day10::run(),
             11 => day11::run(),
+            12 => day12::run(),
             _ => println!("Day {} is not valid, or it has not been solved.", day),
         }
     }
