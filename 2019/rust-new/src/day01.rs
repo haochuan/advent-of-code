@@ -1,25 +1,24 @@
-use std::fs;
-use std::io::{self, BufRead};
+use std::io;
 
-pub fn run() -> usize {
-    let file = fs::File::open("data/01.txt").unwrap();
-    let mut reader = io::BufReader::new(file);
+pub fn run<T>(mut input: T)
+where
+    T: io::BufRead,
+{
     let mut buffer = String::new();
-    let mut result = 0;
+    let mut total = 0;
 
     loop {
-        if reader.read_line(&mut buffer).unwrap() == 0 {
+        if input.read_line(&mut buffer).unwrap() == 0 {
             break;
         }
         let n = buffer.trim().parse::<usize>().unwrap();
 
-        result += match (n / 3).checked_sub(2) {
+        total += match (n / 3).checked_sub(2) {
             Some(i) => i,
             None => 0,
         };
 
         buffer.clear();
     }
-    println!("{}", result);
-    42
+    println!("{}", total);
 }
