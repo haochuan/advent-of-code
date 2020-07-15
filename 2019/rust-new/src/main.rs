@@ -41,7 +41,7 @@ fn run() -> Result<(), Error> {
         }
     };
     match opt.day {
-        1 => advent2019::day01::run(input),
+        1 => advent2019::day01::run(input)?,
         n if n > 1 && n < 26 => bail!("Day {} has not been implemented yet.", n),
         _ => bail!("Day should be the range of 1 to 25."),
     }
