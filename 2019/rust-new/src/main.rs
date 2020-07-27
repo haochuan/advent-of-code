@@ -45,6 +45,7 @@ fn run() -> Result<(), Error> {
         2 => advent2019::day02::run(input)?,
         3 => advent2019::day03::run(input)?,
         4 => advent2019::day04::run(input)?,
+        5 => advent2019::day05::run(input)?,
         n if n > 1 && n < 26 => bail!("Day {} has not been implemented yet.", n),
         _ => bail!("Day should be the range of 1 to 25."),
     }
