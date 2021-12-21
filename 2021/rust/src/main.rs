@@ -1,4 +1,4 @@
-use advent2019::{self, bail, Error, Reader};
+use advent2021::{self, bail, Error, Reader};
 use std::fs;
 use std::io;
 use std::path::PathBuf;
@@ -41,13 +41,7 @@ fn run() -> Result<(), Error> {
         }
     };
     match opt.day {
-        1 => advent2019::day01::run(input)?,
-        2 => advent2019::day02::run(input)?,
-        3 => advent2019::day03::run(input)?,
-        4 => advent2019::day04::run(input)?,
-        5 => advent2019::day05::run(input)?,
-        6 => advent2019::day06::run(input)?,
-        7 => advent2019::day07::run(input)?,
+        1 => advent2021::day01::run(input)?,
         n if n > 1 && n < 26 => bail!("Day {} has not been implemented yet.", n),
         _ => bail!("Day should be the range of 1 to 25."),
     }
