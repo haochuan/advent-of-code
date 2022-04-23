@@ -5,16 +5,25 @@ pub fn run<T>(mut input: T) -> Result<(), Error>
 where
     T: io::BufRead,
 {
+    println!("here");
     let mut content = Vec::new();
+    println!("22");
+    println!("{:?}", input);
     input.read_to_end(&mut content)?;
+
+    println!("1");
 
     //part 1
     let mut reader = io::BufReader::new(&content[..]);
     part_one(&mut reader)?;
 
+    println!("2");
+
     //part 2
     let mut reader = io::BufReader::new(&content[..]);
     part_two(&mut reader)?;
+
+    println!("3");
     Ok(())
 }
 
