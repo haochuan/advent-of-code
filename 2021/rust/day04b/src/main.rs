@@ -40,16 +40,17 @@ fn main() {
                 }
             }
         });
+    let mut result: i32 = 0;
     for op in ops {
         for board in &mut board_list {
             board.mark(op);
-            if board.has_win() {
-                let result = board.get_unmarked_sum() * op;
-                println!("number is {}, result is {}.", op, result);
-                return ();
+            if !board.did_win() && board.has_win() {
+                board.mark_win();
+                result = board.get_unmarked_sum() * op;
             }
         }
     }
+    println!("result is {}.", result);
 }
 
 struct Point {
@@ -89,6 +90,7 @@ struct Board {
     // 0-4 rows, 5-9 cols
     // [0..10], (0,0) -> (0, 0 + 5), (1, 2) -> (1, 2 + 5)
     point_map: Vec<i32>,
+    is_win: bool,
 }
 
 impl Board {
@@ -100,6 +102,7 @@ impl Board {
         Board {
             content,
             point_map: vec![0; 10],
+            is_win: false,
         }
     }
 
@@ -138,5 +141,13 @@ impl Board {
             }
         }
         sum
+    }
+
+    fn mark_win(&mut self) {
+        self.is_win = true;
+    }
+
+    fn did_win(&self) -> bool {
+        self.is_win
     }
 }
