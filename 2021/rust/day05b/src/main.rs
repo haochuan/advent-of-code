@@ -1,12 +1,16 @@
 fn main() {
     let mut map = vec![0; 1000 * 1000];
     let mut overlaps = 0;
-    include_str!("../test.txt")
-        // include_str!("../input.txt")
+    // include_str!("../test.txt")
+    include_str!("../input.txt")
         .lines()
         .map(|line| {
             let ((x1, y1), (x2, y2)) = parse_line(line);
-            (x1.min(x2), y1.min(y2), x1.max(x2), y1.max(y2))
+            if x1 == x2 || y1 == y2 {
+                (x1.min(x2), y1.min(y2), x1.max(x2), y1.max(y2))
+            } else {
+                (x1, y1, x2, y2)
+            }
         })
         .for_each(|(x1, y1, x2, y2)| {
             let mut mark = |x, y| {
@@ -22,6 +26,22 @@ fn main() {
                 (x1..=x2).for_each(|x| mark(x, y1));
             } else {
                 // diagonal line at 45 degree
+                for step in 0..=(x1 as i32 - x2 as i32).abs() {
+                    let step = step as usize;
+                    if x1 > x2 {
+                        if y1 > y2 {
+                            mark(x1 - step, y1 - step);
+                        } else {
+                            mark(x1 - step, y1 + step);
+                        }
+                    } else {
+                        if y1 > y2 {
+                            mark(x1 + step, y1 - step);
+                        } else {
+                            mark(x1 + step, y1 + step);
+                        }
+                    }
+                }
             }
         });
     println!("overlaps: {}", overlaps);
